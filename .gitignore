@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.env
+.DS_Store
+chroma_db/
+*.db
+.venv/
+venv/
+env/
+*.sqlite3
+*.pdf
+*.docx

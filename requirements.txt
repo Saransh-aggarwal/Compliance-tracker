@@ -1,0 +1,13 @@
+streamlit>=1.32.0
+SQLAlchemy>=2.0.0
+psycopg2-binary>=2.9.9
+python-dotenv>=1.0.1
+chromadb>=0.4.24
+langchain-google-genai>=1.0.1
+langchain-core>=0.1.33
+langgraph>=0.0.30
+pydantic>=2.6.4
+PyMuPDF>=1.23.26
+pytesseract>=0.3.10
+Pillow>=10.2.0
+python-docx>=1.1.0
