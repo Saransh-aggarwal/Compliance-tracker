@@ -6,7 +6,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import SystemMessage, HumanMessage
 from langgraph.graph import StateGraph, START, END
 
-from config import (
+from src.config import (
     EXTRACTION_SYSTEM_PROMPT,
     TASK_SELECTION_SYSTEM_PROMPT,
     QUERY_REFINEMENT_SYSTEM_PROMPT,
@@ -14,9 +14,9 @@ from config import (
     MAX_RETRIES,
     CONFIDENCE_THRESHOLD
 )
-from retrieval import search_tasks, rerank_with_word_overlap
-from document_processor import clean_text
-from database import get_task_by_id, check_task_duplicate, add_task_log
+from src.retrieval import search_tasks, rerank_with_word_overlap
+from src.document_processor import clean_text
+from src.database import get_task_by_id, check_task_duplicate, add_task_log
 
 class TaskSelectionResult(BaseModel):
     selected_task_id: Optional[str] = Field(description="The ID of the best matching task, or null if no good match")
@@ -62,7 +62,7 @@ def fallback_summarize_text(raw_text: str, max_chars: int = 2500) -> str:
 
 def get_llm(api_key: str, structured_out: bool = False, structured_model=None):
     llm = ChatGoogleGenerativeAI(
-        model="gemma-4-31b-it",
+        model="gemini-1.5-flash",  # Switched to gemini-1.5-flash which is widely supported
         google_api_key=api_key,
         temperature=0.0 if structured_out else 0.7
     )

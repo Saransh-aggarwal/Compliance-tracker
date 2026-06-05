@@ -1,7 +1,7 @@
 import os
 import random
-from database import get_session, Task, TaskLog
-from retrieval import build_collection, index_tasks
+from src.database import get_session, Task, TaskLog, init_db
+from src.retrieval import build_collection, index_tasks
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -62,6 +62,7 @@ def generate_tasks():
     return tasks
 
 def seed_db():
+    init_db()
     session = get_session()
     
     # Delete existing logs to avoid foreign key constraints

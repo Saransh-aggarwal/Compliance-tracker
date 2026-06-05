@@ -19,6 +19,29 @@ This platform uses **LangGraph**, **ChromaDB**, **Google Gemini GenAI**, and **S
 - **Vector DB**: ChromaDB for embedding and semantic search of compliance tasks.
 - **LLM Engine**: Google Gemini (via `langchain-google-genai`).
 
+## 📂 Project Structure
+
+```
+├── app.py                  # Main Streamlit application entry point
+├── seed_100_tasks.py       # Seeding script to initialize the PostgreSQL database and index tasks in ChromaDB
+├── requirements.txt        # Package dependencies
+├── system_walkthrough.md   # Inline architecture walk-through
+├── views/                  # Streamlit Multi-Page View Files
+│   ├── matcher.py          # Compliance AI matching workflow page
+│   ├── add_task.py         # Create Compliance Rule page
+│   ├── manage_emails.py    # IMAP Integrations management page
+│   └── task_dashboard.py   # Audit & Analytics dashboard page
+└── src/                    # Core compliance intelligence engine
+    ├── __init__.py         # Package declaration
+    ├── config.py           # Configuration parameters and LLM system prompts
+    ├── database.py         # PostgreSQL schema definition and SQLAlchemy CRUD operations
+    ├── document_processor.py # PDF, Word, and OCR text extraction functions
+    ├── retrieval.py        # ChromaDB setup and search utility functions
+    ├── agent_workflow.py   # LangGraph-based AI matching agent logic
+    ├── gmail_service.py    # Email processing and attachment extractor
+    └── scheduler.py        # Background thread to sync unread emails periodically
+```
+
 ## 🚀 Getting Started
 
 ### Prerequisites

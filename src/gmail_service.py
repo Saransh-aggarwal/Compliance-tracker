@@ -6,10 +6,10 @@ import datetime
 import tempfile
 import logging
 
-from document_processor import extract_text_from_pdf, extract_text_from_docx, extract_text_from_image
-from agent_workflow import agentic_matching_workflow
-from retrieval import build_collection, index_tasks
-from database import get_all_tasks, update_last_sync_time
+from src.document_processor import extract_text_from_pdf, extract_text_from_docx, extract_text_from_image
+from src.agent_workflow import agentic_matching_workflow
+from src.retrieval import build_collection, index_tasks
+from src.database import get_all_tasks, update_last_sync_time
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')

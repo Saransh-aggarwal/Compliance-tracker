@@ -2,9 +2,9 @@ import os
 import time
 import threading
 import logging
-from database import get_all_email_accounts, update_last_sync_time
-from gmail_service import fetch_and_process_emails
-from retrieval import build_collection
+from src.database import get_all_email_accounts, update_last_sync_time
+from src.gmail_service import fetch_and_process_emails
+from src.retrieval import build_collection
 from dotenv import load_dotenv
 
 # Configure logging

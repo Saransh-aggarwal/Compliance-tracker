@@ -1,6 +1,6 @@
 import streamlit as st
-from scheduler import start_scheduler
-from database import authenticate_admin, init_db, register_admin, get_security_question, reset_password
+from src.scheduler import start_scheduler
+from src.database import authenticate_admin, init_db, register_admin, get_security_question, reset_password
 
 st.set_page_config(page_title="Legasis | Compliance Agent", page_icon="🏛️", layout="wide")
 

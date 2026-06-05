@@ -96,7 +96,10 @@ def get_session():
 def init_db():
     engine = get_engine()
     with engine.connect() as conn:
-        print(conn.execute(text("SELECT current_user, current_database()")).fetchone())
+        try:
+            print(conn.execute(text("SELECT current_user, current_database()")).fetchone())
+        except Exception:
+            print("Running database initialization...")
     Base.metadata.create_all(bind=engine)
     create_default_admin()
 

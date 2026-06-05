@@ -1,6 +1,6 @@
 import streamlit as st
-from database import add_email_account, get_all_email_accounts, delete_email_account
-from scheduler import run_sync_job, get_sync_status
+from src.database import add_email_account, get_all_email_accounts, delete_email_account
+from src.scheduler import run_sync_job, get_sync_status
 
 def main():
     st.markdown("<h1 style='text-align: center; color: #6366f1;'>🔌 IMAP Integrations</h1>", unsafe_allow_html=True)

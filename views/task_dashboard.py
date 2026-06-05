@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-from database import get_all_tasks, get_task_logs_for_year
+from src.database import get_all_tasks, get_task_logs_for_year
 
 st.markdown("<h1 style='text-align: center; color: #6366f1;'>📊 Audit & Analytics Dashboard</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #94a3b8; margin-bottom: 30px;'>Live monitor of compliance rule execution across all operational frequencies.</p>", unsafe_allow_html=True)

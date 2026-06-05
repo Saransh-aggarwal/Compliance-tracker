@@ -6,10 +6,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # TASK_ROWS was removed from config
-from document_processor import extract_text_from_pdf, extract_text_from_docx, extract_text_from_image
-from retrieval import build_collection, index_tasks, index_single_task
-from agent_workflow import agentic_matching_workflow
-from database import init_db, get_all_tasks, add_task
+from src.document_processor import extract_text_from_pdf, extract_text_from_docx, extract_text_from_image
+from src.retrieval import build_collection, index_tasks, index_single_task
+from src.agent_workflow import agentic_matching_workflow
+from src.database import init_db, get_all_tasks, add_task
 
 
 APP_TITLE = "Engine: Agentic Compliance Workflow"

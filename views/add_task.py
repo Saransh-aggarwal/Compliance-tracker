@@ -1,6 +1,6 @@
 import streamlit as st
-from database import add_task
-from retrieval import index_single_task
+from src.database import add_task
+from src.retrieval import index_single_task
 
 st.markdown("<h1 style='text-align: center; color: #6366f1;'>✨ Create Compliance Rule</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #94a3b8; margin-bottom: 30px;'>Define new regulatory requirements. These will be immediately synchronized to the vector engine.</p>", unsafe_allow_html=True)
