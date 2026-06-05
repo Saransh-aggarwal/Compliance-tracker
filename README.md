@@ -14,10 +14,79 @@ This platform uses **LangGraph**, **ChromaDB**, **Google Gemini GenAI**, and **S
 
 ## 🏗 Architecture
 
-- **Frontend**: Streamlit (Python)
-- **Database**: PostgreSQL / SQLite via SQLAlchemy (Models: `Task`, `TaskLog`, `EmailAccount`, `AdminUser`)
-- **Vector DB**: ChromaDB for embedding and semantic search of compliance tasks.
-- **LLM Engine**: Google Gemini (via `langchain-google-genai`).
+The platform is designed with a modular, ingestion-first architecture. It combines deterministic parsing algorithms with stateful, agentic workflows to convert unstructured compliance documents into audited ledger logs.
+
+```mermaid
+graph TD
+    %% Ingestion
+    subgraph Ingestion["1. Ingestion Pipeline"]
+        Doc[📁 Document Upload]
+        Text[📝 Pasted Raw Text]
+        Email[🔌 IMAP Email Sync]
+    end
+
+    %% Preprocessing
+    subgraph Preprocessing["2. Preprocessing & OCR"]
+        PDF[PyMuPDF PDF Reader]
+        DOCX[python-docx Docx Reader]
+        OCR[pytesseract OCR Engine]
+        Clean[clean_text Utility]
+    end
+
+    %% Agent Cycle
+    subgraph Agent["3. LangGraph AI Matcher Workflow"]
+        ExtractNode["Extract Node<br/>(Gemini queries summarizer)"]
+        RetrieveNode["Retrieve Node<br/>(Fetch candidates from ChromaDB)"]
+        OverlapRerank["Word-Overlap Reranker<br/>(Hybrid scoring)"]
+        SelectionNode["Selection Node<br/>(AI candidate evaluation)"]
+        DecisionNode{"Is Confidence >= 0.70<br/>OR Retry >= 2?"}
+        RefineNode["Refinement Node<br/>(Rewrite query via failure feedback)"]
+        PeriodNode["Period Analysis Node<br/>(Analyze covered date/frequency)"]
+        TrackingNode["Tracking Node<br/>(Duplicate checks & completion logging)"]
+    end
+
+    %% Storage
+    subgraph Storage["4. Datastores"]
+        Chroma[(ChromaDB Vector DB)]
+        Postgres[(PostgreSQL/SQLite Database)]
+    end
+
+    %% Connections
+    Doc --> PDF
+    Doc --> DOCX
+    Doc --> OCR
+    Text --> Clean
+    Email --> OCR
+    
+    PDF & DOCX & OCR --> Clean
+    Clean --> ExtractNode
+    
+    ExtractNode --> RetrieveNode
+    RetrieveNode <--> Chroma
+    RetrieveNode --> OverlapRerank
+    OverlapRerank --> SelectionNode
+    SelectionNode --> DecisionNode
+    
+    DecisionNode -- "No (Low Confidence)" --> RefineNode
+    RefineNode --> RetrieveNode
+    
+    DecisionNode -- "Yes (Matched)" --> PeriodNode
+    PeriodNode --> TrackingNode
+    TrackingNode <--> Postgres
+```
+
+### Component Details
+1. **Frontend UI**: Built with Streamlit, providing real-time engine tuning (sliders for candidate retrieval counts, toggle options for keyword reranker, and tracing options to display OCR extractions and graph state transitions).
+2. **Ingestion & Preprocessing**: OCR pipeline using PyTesseract (with contrast enhancement and grayscale conversion) and PyMuPDF to extract text from images, scanned PDFs, and DOCX files. It filters IMAP Gmail streams to fetch unseen emails, discarding promotions and spam.
+3. **ChromaDB Vector Store**: Indexes compliance rules using the `all-MiniLM-L6-v2` embedding model. Performs semantic search over indexed rules.
+4. **Keyword Reranker**: Integrates lexical keyword overlap sorting on top of semantic vector distance (hybrid search model) to boost matches containing specific IDs, locations, or entities.
+5. **LangGraph AI Matcher**: Executes a cyclic graph loop that:
+   - Summarizes document text into a concise search query.
+   - Searches ChromaDB for compliance candidates.
+   - Evaluates match confidence using structured outputs with Gemini.
+   - If confidence is below `0.70`, refines the search query using previous reasoning and retries up to 2 times.
+   - Extracts date tokens matching frequency (e.g. `YYYY-MM` or `YYYY-QX`) using period analysis.
+6. **Relational Database & Auditable Ledger**: Stores tasks, user configurations, and audit logs securely in PostgreSQL or SQLite using SQLAlchemy.
 
 ## 📂 Project Structure
 
